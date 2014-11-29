@@ -1,0 +1,24 @@
+<div class="keyboot-ui">
+  <div class="keyboot-ui-state" state="sign-in">
+    <form>
+      <input type="text" name="url">
+      <input type="submit" value="sign in">
+    </form>
+  </div>
+  <div class="keyboot-ui-state" state="pending">
+    <div id="pending" class="msg" style="display: none;">
+      Request sent. Visit <a></a> to authorize this application.
+      <button link="sign-in">cancel</button>
+    </div>
+  </div>
+  <div class="keyboot-ui-state" state="rejected">
+    Authorization rejected.
+    <button link="sign-in">back</button>
+  </div>
+  <div class="keyboot-ui-state" state="approved">
+    <div>
+      signed in as <span id="fingerprint">...</span>
+    </div>
+    <button class="sign-out">Sign out</button>
+  </div>
+</div>
