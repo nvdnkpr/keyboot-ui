@@ -1,4 +1,3 @@
-var keyboot = require('keyboot');
 var inherits = require('inherits');
 var defined = require('defined');
 var EventEmitter = require('events').EventEmitter;
@@ -9,24 +8,26 @@ var html = fs.readFileSync(__dirname + '/static/ui.html', 'utf8');
 module.exports = UI;
 inherits(UI, EventEmitter);
 
-function UI (opts, cb) {
-    if (!(this instanceof UI)) return new UI(opts, cb);
+function UI (keyboot, opts) {
+    if (!(this instanceof UI)) return new UI(keyboot, opts);
+    EventEmitter.call(this);
     var self = this;
-    if (typeof opts === 'function') {
-        cb = opts;
-        opts = {};
-    }
+    
     if (!opts) opts = {};
     this._waiting = [];
     this._storage = defined(opts.storage, localStorage);
+    this._keyboot = keyboot;
     
     this.element = dom(html);
-    if (cb) this.once('approve', cb);
+    this._elems = {
+        link: this.element.querySelector('*[state=pending] a'),
+        fingerprint: this.element.querySelector('.keyboot-ui-fingerprint')
+    };
     
     var states = this.element.querySelectorAll('*[state]');
     this._states = {};
     for (var i = 0; i < states.length; i++) (function (state) {
-        this._states[state.getAttribute('state')] = states[i];
+        self._states[state.getAttribute('state')] = state;
         hide(state);
     })(states[i]);
     
@@ -39,12 +40,16 @@ function UI (opts, cb) {
     
     this.on('transition', function (prev, cur) {
         if (cur === 'sign-in') self.reset();
+        if (cur === 'pending') {
+            self._elems.link.textContent = self._url;
+            self._elems.link.setAttribute('href', self._url);
+        }
     });
     
     var form = this.element.querySelector('form');
     form.addEventListener('submit', function (ev) {
         ev.preventDefault();
-        self.request(this.elements.url, opts);
+        self.request(form.elements.url.value, opts);
     });
     
     this.on('pending', function () { self._show('pending') });
@@ -52,9 +57,14 @@ function UI (opts, cb) {
     this.on('rejected', function () { self._show('rejected') });
     
     if (this._storage) {
-        var prev = this._storage.getItem('keyboot-ui!prev');
-        if (prev) this.request(prev.url, prev.opts);
+        var sprev = this._storage.getItem('keyboot-ui!prev');
+        if (sprev) {
+            try { var prev = JSON.parse(sprev) }
+            catch (err) {}
+        }
+        if (prev) this.request(prev.url, prev.options);
         else this._show('sign-in');
+        
         this.on('close', onclose);
         this.on('revoke', onclose);
         this.on('reject', onclose);
@@ -74,17 +84,17 @@ UI.prototype._show = function (state) {
 };
 
 UI.prototype.request = function (url, opts) {
-    this.rpc = keyboot(url, opts);
+    this._url = url;
+    this.rpc = this._keyboot(url, opts);
     this.rpc.on('pending', this.emit.bind(this, 'pending'));
     this.rpc.on('approve', this.emit.bind(this, 'approve'));
     this.rpc.on('reject', this.emit.bind(this, 'reject'));
     this.rpc.on('revoke', this.emit.bind(this, 'revoke'));
     this.rpc.on('close', this.emit.bind(this, 'close'));
     
-    this.on('approve', function () {
-        var prev = { url: url, options: opts };
-        if (this._storage) this._storage.setItem('keyboot-ui!prev', prev);
-    });
+    var prev = { url: url, options: opts };
+    var sprev = JSON.stringify(prev);
+    if (this._storage) this._storage.setItem('keyboot-ui!prev', sprev);
 };
 
 UI.prototype.reset = function () {
@@ -92,7 +102,7 @@ UI.prototype.reset = function () {
     this.rpc = null;
 };
 
-[ 'sign', 'fingerprint' ].forEach(function (name) {
+[ 'sign', 'fingerprint', 'publicKey' ].forEach(function (name) {
     UI.prototype[name] = defer(function () {
         this.rpc[name].apply(this.rpc, arguments);
     });

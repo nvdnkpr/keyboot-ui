@@ -6,10 +6,8 @@
     </form>
   </div>
   <div class="keyboot-ui-state" state="pending">
-    <div id="pending" class="msg" style="display: none;">
-      Request sent. Visit <a></a> to authorize this application.
-      <button link="sign-in">cancel</button>
-    </div>
+    Request sent. Visit <a></a> to authorize this application.
+    <button link="sign-in">cancel</button>
   </div>
   <div class="keyboot-ui-state" state="rejected">
     Authorization rejected.
@@ -17,7 +15,7 @@
   </div>
   <div class="keyboot-ui-state" state="approved">
     <div>
-      signed in as <span id="fingerprint">...</span>
+      signed in as <span class="keyboot-ui-fingerprint">...</span>
     </div>
     <button class="sign-out">Sign out</button>
   </div>

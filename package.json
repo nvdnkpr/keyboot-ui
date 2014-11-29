@@ -7,7 +7,7 @@
     "brfs": "~1.2.0",
     "defined": "~0.0.0",
     "inherits": "~2.0.1",
-    "keyboot": "~2.0.3"
+    "keyboot": "^2.0.3"
   },
   "devDependencies": {
     "tape": "^3.0.0"
