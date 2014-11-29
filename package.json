@@ -1,0 +1,38 @@
+{
+  "name": "keyboot-ui",
+  "version": "1.0.0",
+  "description": "keyboot browser interface",
+  "main": "index.js",
+  "dependencies": {
+    "brfs": "~1.2.0",
+    "defined": "~0.0.0",
+    "inherits": "~2.0.1",
+    "keyboot": "~2.0.3"
+  },
+  "devDependencies": {
+    "tape": "^3.0.0"
+  },
+  "browserify": {
+    "transform": [ "brfs" ]
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/keyboot-ui.git"
+  },
+  "homepage": "https://github.com/substack/keyboot-ui",
+  "keywords": [
+    "browser",
+    "keyboot",
+    "authentication",
+    "interface"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "MIT"
+}
