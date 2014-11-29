@@ -34,7 +34,7 @@ function UI (keyboot, opts) {
     var links = this.element.querySelectorAll('*[link]');
     for (var i = 0; i < links.length; i++) (function (link) {
         link.addEventListener('click', function (ev) {
-            self._show(link);
+            self._show(link.getAttribute('link'));
         });
     })(links[i]);
     
@@ -86,6 +86,7 @@ UI.prototype._show = function (state) {
 UI.prototype.request = function (url, opts) {
     this._url = url;
     this.rpc = this._keyboot(url, opts);
+console.log('CREATE', url); 
     this.rpc.on('pending', this.emit.bind(this, 'pending'));
     this.rpc.on('approve', this.emit.bind(this, 'approve'));
     this.rpc.on('reject', this.emit.bind(this, 'reject'));

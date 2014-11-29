@@ -14,8 +14,8 @@ var elems = {
 elems.button.addEventListener('click', onclick);
 
 function onclick () {
-    var msg = elems.sign.querySelector('textarea').value;
-    boot.sign(msg, function (err, res) {
+console.log('click!');
+    boot.sign(elems.txt.value, function (err, res) {
         elems.result.textContent = Buffer(res).toString('base64');
     });
 }
@@ -24,7 +24,8 @@ boot.on('approve', function () { show(elems.sign) });
 boot.on('revoke', function () { hide(elems.sign) });
 boot.on('close', function () {
     hide(elems.sign);
-    button.removeEventListener('click', onclick);
+    elems.result.textContent = '';
+    elems.txt.value = '';
 });
 
 document.querySelector('#auth').appendChild(boot.element);
