@@ -21,9 +21,7 @@ function UI (keyboot, opts) {
     
     this.element = dom(html);
     this._elems = {
-        link: this.element.querySelector('*[state=pending] a'),
-        fingerprint: this.element.querySelector('.keyboot-ui-fingerprint'),
-        as: this.element.querySelector('.keyboot-ui-as')
+        link: this.element.querySelector('*[state=pending] a')
     };
     
     var states = this.element.querySelectorAll('*[state]');
@@ -58,13 +56,6 @@ function UI (keyboot, opts) {
     this.on('approve', function () { self._show('approved') });
     this.on('rejected', function () { self._show('rejected') });
     this.on('revoke', function () { self._show('sign-in') });
-    
-    if (this._permissions.indexOf('fingerprint') >= 0) {
-        this.fingerprint(function (err, id) {
-            self._elems.fingerprint.textContent = id;
-        });
-    }
-    else hide(this._elems.as)
     
     if (this._storage) {
         var sprev = this._storage.getItem('keyboot-ui!prev');
