@@ -1,7 +1,7 @@
 {
   "name": "keyboot-ui",
   "version": "1.0.0",
-  "description": "keyboot sign-in browser interface",
+  "description": "add keyboot sign-in to your website",
   "main": "index.js",
   "dependencies": {
     "brfs": "~1.2.0",

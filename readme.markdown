@@ -1,9 +1,6 @@
 # keyboot-ui
 
-keyboot sign-in browser interface
-
-Use this package to sign in with [keyboot](https://keyboot.org) from your own
-web application.
+add keyboot sign-in to your website
 
 For extra security, consider serving your web application with
 [hyperboot](http://hyperboot.org).
