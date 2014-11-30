@@ -6,11 +6,11 @@
   "dependencies": {
     "brfs": "~1.2.0",
     "defined": "~0.0.0",
-    "inherits": "~2.0.1",
-    "keyboot": "^2.0.3"
+    "inherits": "~2.0.1"
   },
   "devDependencies": {
-    "tape": "^3.0.0"
+    "tape": "^3.0.0",
+    "keyboot": "^2.0.4"
   },
   "browserify": {
     "transform": [ "brfs" ]

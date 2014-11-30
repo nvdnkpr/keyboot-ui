@@ -14,7 +14,6 @@ var elems = {
 elems.button.addEventListener('click', onclick);
 
 function onclick () {
-console.log('click!');
     boot.sign(elems.txt.value, function (err, res) {
         elems.result.textContent = Buffer(res).toString('base64');
     });

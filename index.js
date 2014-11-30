@@ -17,6 +17,7 @@ function UI (keyboot, opts) {
     this._waiting = [];
     this._storage = defined(opts.storage, localStorage);
     this._keyboot = keyboot;
+    this._permissions = defined(opts.permissions, []);
     
     this.element = dom(html);
     this._elems = {
@@ -55,6 +56,13 @@ function UI (keyboot, opts) {
     this.on('pending', function () { self._show('pending') });
     this.on('approve', function () { self._show('approved') });
     this.on('rejected', function () { self._show('rejected') });
+    this.on('revoke', function () { self._show('sign-in') });
+    
+    if (this._permissions.indexOf('fingerprint') >= 0) {
+        this.fingerprint(function (err, id) {
+            self._elems.fingerprint.textContent = id;
+        });
+    }
     
     if (this._storage) {
         var sprev = this._storage.getItem('keyboot-ui!prev');
@@ -86,7 +94,6 @@ UI.prototype._show = function (state) {
 UI.prototype.request = function (url, opts) {
     this._url = url;
     this.rpc = this._keyboot(url, opts);
-console.log('CREATE', url); 
     this.rpc.on('pending', this.emit.bind(this, 'pending'));
     this.rpc.on('approve', this.emit.bind(this, 'approve'));
     this.rpc.on('reject', this.emit.bind(this, 'reject'));
