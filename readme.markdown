@@ -26,6 +26,9 @@ boot.on('approve', function () {
 });
 ```
 
+Check out the example directory and
+[view an example in action](https://substack.neocities.org/keyboot_ui.html).
+
 # methods
 
 ``` js
