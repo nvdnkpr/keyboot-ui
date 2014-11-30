@@ -57,6 +57,9 @@ function UI (keyboot, opts, cb) {
         ev.preventDefault();
         self.request(form.elements.url.value, opts);
     });
+    if (opts.defaultURL) {
+        form.elements.url.value = opts.defaultURL;
+    }
     
     this.on('pending', function () { self._show('pending') });
     this.on('approve', function () { self._show('approved') });

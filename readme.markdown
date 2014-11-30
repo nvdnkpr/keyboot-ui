@@ -42,6 +42,7 @@ Optionally provide:
 * `opts.permissions` - array of string permissions to request
 * `opts.storage` - storage mechanism, default: localStorage. Turn off
 persistence by passing in `false`.
+* `opts.defaultURL` - default URL to show, for example `'https://keyboot.org'`
 
 `cb(boot)` sets up a listener for the `'keyboot'` event.
 

@@ -2,7 +2,8 @@ var keyboot = require('keyboot');
 var kbui = require('../');
 
 var boot = kbui(keyboot, {
-    permissions: [ 'fingerprint', 'sign', 'publicKey' ]
+    permissions: [ 'fingerprint', 'sign', 'publicKey' ],
+    defaultURL: 'https://keyboot.org'
 });
 
 var elems = {
