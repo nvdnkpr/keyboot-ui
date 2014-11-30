@@ -27,6 +27,7 @@
     "browser",
     "keyboot",
     "authentication",
+    "crypto",
     "interface"
   ],
   "author": {
