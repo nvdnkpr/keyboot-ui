@@ -8,12 +8,18 @@ var html = fs.readFileSync(__dirname + '/static/ui.html', 'utf8');
 module.exports = UI;
 inherits(UI, EventEmitter);
 
-function UI (keyboot, opts) {
-    if (!(this instanceof UI)) return new UI(keyboot, opts);
+function UI (keyboot, opts, cb) {
+    if (!(this instanceof UI)) return new UI(keyboot, opts, cb);
     EventEmitter.call(this);
     var self = this;
     
+    if (typeof opts === 'function') {
+        cb = opts;
+        opts = {};
+    }
     if (!opts) opts = {};
+    if (cb) this.on('keyboot', cb);
+    
     this._waiting = [];
     this._storage = defined(opts.storage, localStorage);
     this._keyboot = keyboot;
@@ -96,6 +102,8 @@ UI.prototype.request = function (url, opts) {
     var prev = { url: url, options: opts };
     var sprev = JSON.stringify(prev);
     if (this._storage) this._storage.setItem('keyboot-ui!prev', sprev);
+    
+    this.emit('keyboot', this.rpc);
 };
 
 UI.prototype.reset = function () {
